@@ -1,48 +1,46 @@
 # chatbot-ai (backend)
 
-**chatbot-ai** is a customizable **Retrieval-Augmented Generation (RAG)** system built with **FastAPI**, **LangChain**, and **OpenAI**.
-It allows users to upload documents, ask questions, and receive AI-generated answers based on their own data. The system includes **user authentication**, **JWT-secured endpoints**, and a **CI pipeline with automated testing**, making it production-ready and portfolio-grade.
+**chatbot-ai** is a backend project that implements a **Retrieval-Augmented Generation (RAG)** system using **FastAPI**, **LangChain**, **OpenAI**, and **Chroma DB**.
+It includes secure **user authentication**, **document ingestion**, **AI-powered chat responses**, and a **CI pipeline with automated testing** following the **GitFlow** branching model.
 
 ---
 
 ## 🔹 Features
 
-- **User Authentication** — Secure registration and login using JWT.
-- **Document Ingestion** — Upload PDF or text files and store embeddings in **Chroma DB**.
-- **RAG Chat** — Query your uploaded documents using **OpenAI** + **LangChain**.
-- **Customizable AI Pipeline** — Configure retrieval parameters (`top_k`, model selection, etc.).
-- **Automated Tests** — Integrated unit tests with **pytest** and GitHub Actions.
-- **GitFlow Workflow** — Organized branching model for clean development and releases.
-- **Modular Architecture** — Clear separation of routes, services, models, and core logic.
+- 🔐 **User Authentication** with JWT and password hashing
+- 📚 **Document Ingestion**: store PDFs or text embeddings in Chroma DB
+- 💬 **Chat with AI** using LangChain and OpenAI’s API
+- 🧪 **Automated Testing** using pytest
+- 🚀 **GitFlow & CI Pipeline** with GitHub Actions
+- 🧱 **Modular FastAPI Architecture** (routes, services, models, config)
 
 ---
 
 ## 🔹 Tech Stack
 
-| Layer                  | Technology                        |
-| ---------------------- | --------------------------------- |
-| **Backend**            | FastAPI (Python)                  |
-| **Database**           | PostgreSQL + SQLAlchemy + Alembic |
-| **Vector Store**       | Chroma DB                         |
-| **AI Model**           | OpenAI (via LangChain)            |
-| **Auth**               | JWT + Passlib                     |
-| **Testing**            | pytest + httpx + pytest-cov       |
-| **CI/CD**              | GitHub Actions                    |
-| **Frontend (planned)** | Next.js + Tailwind + Zustand      |
+| Layer                 | Technology                        |
+| --------------------- | --------------------------------- |
+| **Backend Framework** | FastAPI                           |
+| **Database**          | PostgreSQL + SQLAlchemy + Alembic |
+| **Vector Store**      | Chroma DB                         |
+| **AI Engine**         | OpenAI via LangChain              |
+| **Auth & Security**   | JWT + Passlib                     |
+| **Testing**           | pytest + httpx + pytest-cov       |
+| **CI/CD**             | GitHub Actions                    |
 
 ---
 
 ## 🔹 Folder Structure
 
 ```
-ROOT/
+chatbot-ai/
 │
 ├── main.py               # FastAPI entry point
 ├── core/
-│   └── config.py         # Environment variables and app settings
+│   └── config.py         # Environment variables and global settings
 ├── models/               # SQLAlchemy models
-├── routes/               # API routes (auth, RAG, etc.)
-├── services/             # Business logic (auth, embeddings, etc.)
+├── routes/               # FastAPI routers (auth, RAG, etc.)
+├── services/             # Business logic (authentication, RAG processing)
 ├── tests/                # Unit and integration tests
 │   ├── conftest.py
 │   ├── test_auth.py
@@ -67,8 +65,8 @@ cd chatbot-ai
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
+source venv/bin/activate   # Linux/macOS
+venv\Scripts\activate      # Windows
 ```
 
 ### 3️⃣ Install dependencies
@@ -87,25 +85,27 @@ OPENAI_API_KEY=your_openai_api_key
 SECRET_KEY=your_jwt_secret
 ```
 
-### 5️⃣ Apply database migrations
+### 5️⃣ Apply migrations
 
 ```bash
 alembic upgrade head
 ```
 
-### 6️⃣ Start the server
+### 6️⃣ Start the development server
 
 ```bash
 uvicorn main:app --reload
 ```
 
-Access the API at 👉 `http://localhost:8000`
+Then visit 👉 **[http://localhost:8000](http://localhost:8000)**
 
 ---
 
-## 🔹 Usage
+## 🔹 API Overview
 
-### 🔐 Register a user
+### 🧑‍💻 Authentication
+
+**Register user**
 
 ```
 POST /auth/register
@@ -115,7 +115,7 @@ POST /auth/register
 }
 ```
 
-### 🔑 Login
+**Login**
 
 ```
 POST /auth/login
@@ -125,9 +125,13 @@ POST /auth/login
 }
 ```
 
-➡️ Returns a JWT token.
+✅ Returns a JWT token for authentication.
 
-### 📤 Upload a document
+---
+
+### 📚 Document Ingestion
+
+Upload a file and generate embeddings:
 
 ```
 POST /rag/upload
@@ -135,7 +139,11 @@ Headers: Authorization: Bearer <JWT>
 Body: file (PDF or TXT)
 ```
 
-### 💬 Ask a question
+---
+
+### 💬 Ask a Question
+
+Query the knowledge base using OpenAI:
 
 ```
 POST /rag/query
@@ -147,32 +155,32 @@ Body: { "question": "What is this document about?" }
 
 ## 🔹 GitFlow Workflow
 
-This project follows the **GitFlow branching model** for organized development:
+This repository follows **GitFlow** for clean development and releases:
 
-| Branch      | Purpose                                   |
-| ----------- | ----------------------------------------- |
-| `main`      | Production-ready code                     |
-| `develop`   | Integration and testing branch            |
-| `feature/*` | Individual features (e.g. `feature/auth`) |
-| `release/*` | Pre-release versions                      |
-| `hotfix/*`  | Emergency fixes for production            |
+| Branch      | Purpose                    |
+| ----------- | -------------------------- |
+| `main`      | Production-ready code      |
+| `develop`   | Integration/testing branch |
+| `feature/*` | New features               |
+| `release/*` | Pre-release versions       |
+| `hotfix/*`  | Quick fixes for production |
 
-### Example workflow:
+### Example:
 
 ```bash
 git checkout -b feature/auth develop
-# ... develop your feature
+# Develop feature
 git commit -m "Add user authentication"
 git push origin feature/auth
 
-# Merge to develop
+# Merge into develop after review
 git checkout develop
 git merge feature/auth
 ```
 
 ---
 
-## 🧪 Testing
+## 🔹 Testing
 
 ### Run all tests
 
@@ -192,13 +200,13 @@ pytest --cov=services --cov=routes --cov-report=term-missing
 pytest --cov=services --cov=routes --cov-report=html
 ```
 
-Then open `htmlcov/index.html` in your browser.
+Open `htmlcov/index.html` in your browser to view the report.
 
 ---
 
 ## 🔹 Continuous Integration (CI)
 
-GitHub Actions automatically runs your test suite on every push or pull request to:
+The CI pipeline runs automatically using **GitHub Actions** on every push or pull request to:
 
 - `main`
 - `develop`
@@ -206,31 +214,32 @@ GitHub Actions automatically runs your test suite on every push or pull request 
 
 ### 📁 `.github/workflows/test-pipeline.yml`
 
-This workflow:
+The workflow:
 
 - Installs dependencies
-- Runs all tests with coverage
-- Blocks merge if tests fail
+- Runs all unit tests
+- Reports coverage
+- Blocks merging if tests fail
 
-View pipeline results in your GitHub repo under **Actions**.
+View the results under the **Actions** tab in GitHub.
 
 ---
 
 ## 🔹 Future Enhancements
 
-- Frontend (Next.js + Tailwind + Zustand)
+- Docker support for easy deployment
+- Async task queue with Celery or FastAPI background tasks
+- Admin dashboard for user management
 - Streaming chat responses
-- Support for additional document types (CSV, DOCX)
-- Multi-user isolation for Chroma DB
-- Docker deployment for backend and vector store
+- API rate limiting
 
 ---
 
 ## 🔹 Contributing
 
-1. Fork the repository
+1. Fork this repo
 2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit changes (`git commit -m "Add your feature"`)
+3. Commit your changes (`git commit -m "Add your feature"`)
 4. Push and open a Pull Request
 
 ---
