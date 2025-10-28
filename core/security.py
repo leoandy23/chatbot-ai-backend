@@ -4,7 +4,7 @@ from core.config import Config
 from werkzeug.security import generate_password_hash, check_password_hash
 
 SECRET_KEY = Config.SECRET_KEY
-ALGORITHM = "HS256"
+ALGORITHM = Config.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
 
 
