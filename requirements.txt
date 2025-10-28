@@ -8,11 +8,12 @@ python-dotenv
 chromadb
 openai
 langchain
-passlib[bcrypt]
 PyJWT
+python-jose[cryptography]
 pypdf
 requests
 pytest
 pytest-asyncio
 httpx
 pytest-cov
+werkzeug
