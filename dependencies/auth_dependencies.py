@@ -12,13 +12,19 @@ from uuid import UUID
 SECRET_KEY = Config.SECRET_KEY
 ALGORITHM = Config.ALGORITHM
 
-bearer_scheme = HTTPBearer(auto_error=True)
+bearer_scheme = HTTPBearer(auto_error=False)
 
 
 async def get_current_user(
     credentials: Annotated[HTTPAuthorizationCredentials, Security(bearer_scheme)],
     db: Annotated[Session, Depends(get_db)],
 ) -> User:
+    if credentials is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     token = credentials.credentials
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
