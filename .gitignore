@@ -6,3 +6,5 @@ __pycache__/
 .vscode/
 *.db
 .pytest_cache/
+uploads/
+vector_db/

@@ -8,6 +8,10 @@ python-dotenv
 chromadb
 openai
 langchain
+langchain-community
+langchain-openai
+langchain-chroma
+langchain-text-splitters
 PyJWT
 python-jose[cryptography]
 pypdf
